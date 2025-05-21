@@ -1,0 +1,1 @@
+from .params import dict_hh, list_skills
