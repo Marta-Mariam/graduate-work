@@ -80,5 +80,5 @@ for category, roles in dict_sj.items(): # перебираем ключи и з�
                 SuperJOB_data.append(parsed) # записываем результат
 
 df = pd.DataFrame(SuperJOB_data) # создаем датафрейм
-df.to_csv("SuperJOB2.csv", index=False, encoding="utf-8-sig")
-print(" Готово! Сохранено в SuperJOB2.csv") # информируем о завершении
+df.to_csv("SuperJOB.csv", index=False, encoding="utf-8-sig")
+print(" Готово! Сохранено в SuperJOB.csv") # информируем о завершении

@@ -22,3 +22,4 @@ NUMERICAL_COLUMNS = ['salary_up']
 # Колонки, которые выводим в таблице вакансий
 VACANCY_COLUMNS = ['website', 'job_title', 'link']
 
+MY_PALETTE = ['#0c3e69', '#cf3aa2', '#1fb880', '#c2051b', '#cdeb09', '#6D6027', '#dfcbc2', '#cf3aa2', '#ebedd9', '#dfd5de']

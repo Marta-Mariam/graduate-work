@@ -7,6 +7,12 @@ import pandas as pd
 from utils.data_loader import df, df_ML, model
 from utils.params import cat_features_names, num_features_names
 from layouts import first_tabs, last_tabs
+import plotly.io as pio
+import settings as st
+
+pio.templates['custom'] = pio.templates['plotly'].update(
+    layout=dict(colorway=st.MY_PALETTE)
+)
 
 # Загружаем данные
 DF_MAIN = df   # основной DataFrame для вкладки Аналитика
@@ -147,7 +153,7 @@ def register_callbacks(app):
         fig_spec_skill = go.Figure(go.Bar(
             x=top.index.tolist(),
             y=top.values.tolist(),
-            marker=dict(color=top.values.tolist(), colorscale='Blues'),
+            marker=dict(color=top.values.tolist()),
         ))
         fig_spec_skill.update_layout(
             title=chart_title,
@@ -156,180 +162,37 @@ def register_callbacks(app):
         )
 
         
-        # if spec_skil_spec =='spec':
-        #     top = df_copy['specialization'].value_counts(normalize=True).nlargest(5) * 100 # сразу считает долю от всего (normalize=True). n наибольших значений в pandas .nlargest(n)
-        #     chart_title = 'Топ-5 востребованных специализаций'
-        #     x_label = 'Специализация'
-        # else:
-        #     top = df_copy['skills'].str.split(',').explode().str.strip().value_counts(normalize=True).nlargest(5) * 100 # .explode() — превращает каждый навык в отдельную строку
-        #     chart_title = 'Топ-5 востребованных навыков'
-        #     x_label = 'Навык'
-        # fig_spec_skill = px.bar(
-        #     x=top.index.tolist(),
-        #     y=top.values.tolist(),#  Index(['Разработчик', 'Аналитик, spec_counts.index.tolist() — превращает это в обычный список Python:
-        #     labels={'x': x_label, 'y': 'Процент частоты (%)'},
-        #     title='Топ-5 востребованных специализаций',
-            
-        #     # color=top.values.tolist(), только для числовой оси
-        #     color_continuous_scale='Blues'
-        #     )
-        # --- 9) Scatter: топ‑10 вакансий по зарплате ---
-#  Этот предпорследний 1 там где пару точке все в процентах
-        # if salary_tab == 'distribution':
-    # 1) РАСЫПАНИЕ ПО БИНАМ
-    # # задаем интервалы (левые границы)
-    #         bins = [0, 40000, 80000, 120000, 180000, 250000, 350000, 500000, df_copy['salary_from'].max()+1]
-    #         labels = [
-    #             '0–40k','40–80k','80–120k','120–180k',
-    #             '180–250k','250–350k','350–500k','>500k'
-    #         ]
-    # # разбиваем на категории
-    #         df_copy['bin'] = pd.cut(df_copy['salary_from'], bins=bins, labels=labels, right=False)
-    # # считаем процент или количество
-    #         grp = df_copy.groupby('bin')['salary_from'].agg(['count'])
-    #         grp['percent'] = grp['count'] / grp['count'].sum() * 100
 
-    #         fig_salary = go.Figure()
-    # # точки: по центру бина, по проценту
-    # # преобразуем метки бинов в числовые позиции
-    #         x_pos = list(range(len(labels)))
-    #         fig_salary.add_trace(go.Scatter(
-    #             x=x_pos,
-    #             y=grp['percent'],
-    #             mode='markers',
-    #             marker=dict(
-    #                 size=12,
-    #                 color=df_copy.groupby('bin')['profession_category'].agg(lambda s: pd.Categorical(s).codes.mean()).reindex(labels).fillna(0),
-    #                 colorscale='Viridis',
-    #                 showscale=True,
-    #                 colorbar=dict(title='Prof. cat. code')
-    #             ),
-    #             hovertemplate='Интервал: %{text}<br>' + 'Процент: %{y:.1f}%<extra></extra>',
-    #             text=labels
-    #         ))
-    #         fig_salary.update_layout(
-    #             title='Распределение зарплат по бинам',
-    #             xaxis=dict(
-    #                 tickmode='array',
-    #                 tickvals=x_pos,
-    #                 ticktext=labels,
-    #                 title='Интервалы зарплаты, ₽'
-    #             ),
-    #             yaxis=dict(title='Доля от всех вакансий, %')
-    #         )
-
-    #     else:
-    # # 2) СРЕДНЯЯ ЗАРПЛАТА ПО ТОР‑10 СПЕЦИАЛИЗАЦИЯМ
-    #         mean_spec = df_copy.groupby('specialization')['salary_from'].mean().nlargest(10)
-    #         fig_salary = go.Figure(go.Scatter(
-    #             x=mean_spec.index.tolist(),
-    #             y=mean_spec.values.tolist(),
-    #             mode='lines+markers',
-    #             marker=dict(size=8, color='darkblue'),
-    #             line=dict(width=2),
-    #             hovertemplate='<b>%{x}</b><br>Средняя зарплата: %{y:.0f} ₽<extra></extra>'
-    #         ))
-    #         fig_salary.update_layout(
-    #             title='Средняя зарплата по топ‑10 специализациям',
-    #             xaxis_title='Специализация',
-    #             yaxis_title='Средняя зарплата, ₽'
-    #         )
-
-
-        # avg = df_copy[''] Предпоследний
-        # if salary_tab == 'max':
-        #     sel = df_copy.nlargest(10, 'salary_from')
-        # else:
-        #     sel = df_copy.nsmallest(10, 'salary_from')
-
-        # fig_salary = go.Figure(go.Scatter(
-        #     x=sel['job_title'],
-        #     y=sel['salary_from'],
-        #     mode='markers+text',
-        #     text=sel['city'],
-        #     marker=dict(size=12, color='indigo'),
-        #     hovertemplate='<b>%{x}</b><br>Зарплата: %{y} ₽<br>Город: %{text}<extra></extra>'
-        # ))
-        # fig_salary.update_layout(
-        #     title='ТОП‑10 вакансий по зарплате',
-        #     xaxis_title='Должность',
-        #     yaxis_title='Зарплата от'
-        # )
-
-        # if salary_tab == 'max':
-        #     sel = df_copy.nlargest(10, 'salary_from')
-        # else:
-        #     sel = df_copy.nsmallest(10, 'salary_from')
-        # fig_salary = px.scatter(
-        #     sel,
-        #     x='job_title', y='salary_from',
-        #     hover_data=['city'],
-        #     labels={'salary_from':'Зарплата от'},
-        #     title='ТОП‑10 вакансий по зарплате'
-    
-        # )
-
-        # … внутри функции update_analytics(…):
         if salary_tab == 'distribution':
     # 1) РАСПРЕДЕЛЕНИЕ ЗАРПЛАТ (каждая вакансия = точка, полупрозрачность)
     # берём все ненулевые зарплаты
             # 1) Берём только колонку salary_from и убираем NaN
-            salaries = df_copy['salary_from'].dropna()
+            salaries = df_copy['salary_from']
 
 # 2) Фильтруем по диапазону (например, от 10 000 до 600 000)
-            salaries = salaries[salaries.between(10000, 600000)]
+            salaries = salaries[salaries.between(10000, 500000)]
             fig_salary = go.Figure(go.Box(
                 y=salaries,   # данные по зарплатам
-                boxpoints='all',                     # рисовать все точки
-                jitter=0.5,                          # разброс точек внутри «коробки»
-                pointpos=-1.8,                       # сместить точки влево
-                marker=dict(
-                    size=4,
-                    color='indigo',
-                    opacity=0.6
-                ),
-                line=dict(color='black')
+                boxpoints=False,                     # рисовать все точки
+                # jitter=0.5,                          # разброс точек внутри «коробки»
+                # pointpos=-1.8,                       # сместить точки влево
+                # marker=dict(
+                #     size=4,
+                #     color='indigo',
+                #     opacity=0.6
+                # ),
+                name='Оплата труда', # trace если убрать fig.update_traces(showlegend=False, hoverinfo='skip')
+                # line=dict(color='darkorange'),
+                # hoverinfo='skip'# откбчение подсказок медианы и так далее
             ))
 
             fig_salary.update_layout(
-                title='Распределение зарплат (Box + points)',
+                title='Распределение заработной платы',
                 yaxis_title='Зарплата от, ₽',
                 xaxis=dict(showticklabels=False),    # ось X скрываем, т.к. она не несёт смысла
                 # height=300,
-                margin=dict(l=20, r=20, t=40, b=20)
+                # margin=dict(l=20, r=20, t=40, b=20) # внутренними отступами (margin) вокруг графика внутри фигуры (Figure)
             )
-
-
-    #         salaries = df_copy['salary_from']
-
-    # # создаём scatter, все y=0, чтобы точки лежали на одной линии
-    #         fig_salary = go.Figure(go.Scatter(
-    #             x=salaries,
-    #             y=df_copy['salary_up'],
-    #             mode='markers',
-    #             marker=dict(
-    #                 size=6,
-    #         # кодируем цветом по profession_category
-    #                 color=df_copy['profession_category'].astype('category').cat.codes,
-    #                 colorscale='Viridis',
-    #                 opacity=0.5,
-    #                 showscale=True,
-    #                 colorbar=dict(title='Prof. cat. code')
-    #             ),
-    #             hovertemplate='Зарплата: %{x} ₽<extra></extra>'
-    #         ))
-
-    # # настраиваем вид
-    #         fig_salary.update_layout(
-    #             title='Распределение вакансий по зарплате',
-    #             xaxis=dict(
-    #                 title='Зарплата от, ₽',
-    #                 range=[0, salaries.max() * 1.05]
-    #             ),
-    #             yaxis=dict(visible=False),
-    #             # height=300,
-    #             margin=dict(l=20, r=20, t=40, b=20)
-    #         )
 
         else:
     # 2) СРЕДНЯЯ ЗАРПЛАТА ПО ТОП‑10 СПЕЦИАЛИЗАЦИЯМ
@@ -344,26 +207,30 @@ def register_callbacks(app):
             ))
 
             fig_salary.update_layout(
-                title='В среднем больше всего получают (10 специальностей)',
+                title='Рейтинг специальностей по средней заработной плате',
                 xaxis_title='Специализация',
                 yaxis_title='Средняя зарплата, ₽',
                 # height=300,
-                 margin=dict(l=20, r=20, t=40, b=20)
+                #  margin=dict(l=20, r=20, t=40, b=20)
             )
 
-        col_map = {'exp': 'experience', 'edu': 'education', 'sched': 'work_schedule'}
-        col = col_map.get(perc_tab, 'experience')
-
+        col_map = {'exp': 'experience', 'edu': 'education', 'sched': 'work_schedule'} # из выбора, loyouts
+        col = col_map.get(perc_tab, 'experience') # по умолчанию, id perc_tab
         # считаем distribution на отфильтрованных данных
         value_counts = df_copy[col].value_counts()
-
+        avg_salaries = df_copy.groupby(col) ['salary_from'].mean()
+        hover_text = [f"{cat}<br>Вакансий: {value_counts[cat]}<br>Средняя зарплата: {avg_salaries[cat]:,.0f} ₽"for cat in value_counts.index]
         fig_pie = go.Figure(go.Pie(
-            labels=value_counts.index.tolist(),
-            values=value_counts.values.tolist(),
-            hoverinfo='label+percent+value',
-            textinfo='label+percent'
+            labels=value_counts.index.tolist(), # названия секторов
+            values=value_counts.values.tolist(), # значения (размер сектора)
+            # hoverinfo='label+percent+value', # текст при наведении: метка + процент + значение
+            # textinfo='label+percent' # текст на графике: метка + процент
+            hoverinfo='text', # использовать собственный hovertext
+            hovertext=hover_text,  # передаем сюда наш список
+            # textinfo='label+percent' # текст прямо на круге
         ))
-        fig_pie.update_layout(title=f'Распределение по {col}')
+        title_map = {'experience': 'опыту работы', 'education': 'образованию', 'work_schedule': 'графику работы'}
+        fig_pie.update_layout( title=f'Распределение по {title_map.get(col, col)}')
 
 
         # # --- 10) Pie chart:exp/edu/sched ---
@@ -403,7 +270,7 @@ def register_callbacks(app):
                 center=dict(lat=55.75, lon=37.62),
                 zoom=4
             ),
-            title='География вакансий (размер маркера ~ числу вакансий)',
+            title='География вакансий',
             height=600,
             margin=dict(r=0, t=30, l=0, b=0),
             dragmode='pan'
@@ -495,7 +362,10 @@ def register_callbacks(app):
 
         # делаем прогноз
         pred = MODEL.predict(inp)
-        text = f"💰 {int(pred)} ₽ ± 20000 ₽ (найдено {len(filtr)} вакансий)"
+            # Исключаем superjob только для вывода
+        no_sj = filtr[filtr['website'] != 'superjob']
+        text = f"💰 {int(pred)} ₽ ± 20000 ₽ (найдено {len(no_sj)} вакансий)"
+        # text = f"💰 {int(pred)} ₽ ± 20000 ₽ (найдено {len(filtr)} вакансий)" # считает все вакансии
 
         # строим таблицу вакансий, если есть данные
  
@@ -504,8 +374,8 @@ def register_callbacks(app):
                 html.Td(r['website']),
                 html.Td(r['job_title']), # html.Td(...) — ячейки таблицы.
                 html.Td(html.A('Открыть', href=r['link'], target='_blank')) # Ссылку (html.A(...)) с текстом "Открыть", ведущую на r['link'],target='_blank' — ссылка откроется в новой вкладке. 
-            ]) for _, r in filtr.iterrows() # Перебираем filtr.iterrows() — каждая вакансия.
-
+            ]) for _, r in no_sj.iterrows() # Перебираем .iterrows() — каждая вакансия кроме sj
+            # ]) for _, r in filtr.iterrows() # показывает все вакансии
         ]
         table = dbc.Table( # Используется dbc.Table (из dash_bootstrap_components) для красивой таблицы:
             [html.Thead(html.Tr([html.Th('Сайт'), html.Th('Вакансия'), html.Th('Ссылка')])), #Шапка (Thead) с названиями колонок.
