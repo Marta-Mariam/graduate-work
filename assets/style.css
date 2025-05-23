@@ -14,7 +14,7 @@ body {
 }
 
 * {
-    font-family: 'Open Sans', cursive !important; /*ко всем элементам страницы шрифт*/
+    font-family: 'Open Sans',  sans-serif  !important; /*ко всем элементам страницы шрифт*/
 }
 
 /*для заголовка*/
@@ -35,32 +35,52 @@ body {
 .button {
     color:#333333; 
     background: linear-gradient(to bottom right, #dfd5de, #ede7ce, #dfcbc2);
-    border-radius: 20px;
     border: 1px solid #482314;
     border-radius: 20px;
 
 }
 
 /*подзаголовки*/
-/*.headings {
+/* .headings {
     color:#333333; 
     background: linear-gradient(to bottom right, #dfd5de, #ede7ce, #dfcbc2);
     border-radius: 20px;
     border: 1px solid #482314;
     padding: 10px; 
     margin: 5px auto; 
-    max-Width: 30%;
-    text-align: center;
+    max-Width: 70%;
+    text-align: left;
     font-size: 16px
-}*/
+} */
 
 .headings {
     color:#333333; 
     padding: 10px; /* Внутренние отступы */
     margin: 5px auto; /* Отступы снаружи + центрирование */
+    background: linear-gradient(to bottom right, #dfd5de, #ede7ce, #dfcbc2);
     border-radius: 20px;
     border: 1px solid #482314;
     text-align: left;
+    width: 33%;  /* 1/3 ширины*/
+    text-align: left;
+    display: inline-block;  /*Чтобы элементы шли в строку, если надо*/
+    font-size: 16px;
+    vertical-align: top; /*Выравнивание по верхнему краю*/
+} 
+
+.headingstu {
+    color:#333333; 
+    padding: 10px; /* Внутренние отступы */
+    margin: 5px auto; /* Отступы снаружи + центрирование */
+    background: linear-gradient(to bottom right, #dfd5de, #ede7ce, #dfcbc2);
+    border-radius: 20px;
+    border: 1px solid #482314;
+    text-align: left;
+    width: 33%;  /* 1/3 ширины*/
+    text-align: left;
+    display: inline-block;  /*Чтобы элементы шли в строку, если надо*/
+    font-size: 20px;
+    vertical-align: top; /*Выравнивание по верхнему краю*/
 }
 
 /*селекторы*/
@@ -82,13 +102,13 @@ body {
 /* Выбранные значения */
 .Select-value-label {
     color: #333333 !important;
-    font-size: 16 px !important;
-    padding: 2px 5px !important;
+    font-size: 16px !important;
+    padding: 1px 5px !important;
 }
 
 /* Иконка выбранного значения крестик и |*/
 .Select-value-icon {
-    color: #800000 !important;
+    color: #c50808 !important;
     border-right: 1px solid #dfd5de !important;
 }
 
@@ -130,4 +150,27 @@ body {
     border-bottom: none;
 }
 
-/**/
+/*графики*/
+/* Общий стиль для контейнеров графиков */
+.graph-card {
+    /* background: linear-gradient(135deg, #f97a03, #e9ecef); */
+    border-radius: 20px;
+    /* padding: 20px; */
+    /* margin-bottom: 30px; */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Размеры графиков */
+.graph-figure {
+    width: 100%;
+    /* height: 500px; */
+}
+
+/* Стили текста */
+.graph-title {
+    font-size: 24px;
+    /* font-weight: bold; */
+    color: #333333;
+    margin-bottom: 10px;
+    text-align: center;
+}
