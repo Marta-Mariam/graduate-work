@@ -196,7 +196,7 @@ def register_callbacks(app):
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
             margin=dict(t=30, b=30, l=30, r=30),
-            height=458
+            height=456
             # margin=dict(t=60, b=100)
         )
 
