@@ -20,12 +20,12 @@ MODEL = model       # загруженная модель
 def register_callbacks(app):
     """
     Регистрирует колбеки приложения.
-    Здесь мы используем один унифицированный колбек для Выбрать всех графиков вкладки "Аналитика".
+    Здесь мы используем один унифицированный колбек для всего в "Аналитика".
     """
 
-    # --- Рендер вкладок ---
+ 
     @app.callback(
-        Output('tabs_content', 'children'), #определяем какая вкладка будет первая выводится и изменяьтся при нажатии
+        Output('tabs_content', 'children'), #определяем какая вкладка будет первая выводится и изменяться при нажатии
         Input('tabs', 'active_tab')
     )
     def render_tab(active_tab): # изменения в  dash-bootstrap-components >= 2.0.0
@@ -36,60 +36,39 @@ def register_callbacks(app):
         # return first_tabs() if active_tab == 'tab-1' else last_tabs()
 
 
-
-    # --- Унифицированный колбек для Выбрать всех аналитических графиков ---
+    # первый модуль(вкладка)
+    # унифицированный колбек для всех графиков
     @app.callback(
-        # Шесть выходов: пять графиков + карта
         Output('quant-bar', 'figure'),
         Output('spec_skil_bar', 'figure'),
         Output('salary-scatter', 'figure'),
         Output('perc-pie',    'figure'),
         Output('vacancy-map', 'figure'),
-        # Шесть входов: четыре фильтра и два таба
         Input('web_sel',    'value'),
         Input('city_sel',   'value'),
         Input('region_sel', 'value'),
-        Input('spec_sel',   'value'), # селекторы вери и этот
+        Input('spec_sel',   'value'), # селекторы выше и этот
         Input('spec_skil_spec',   'active_tab'), # табы
         Input('salary_tabs','active_tab'),
         Input('perc_tabs',  'active_tab'),
     )
     def update_analytics(web_sel, city_sel, region_sel, spec_sel, spec_skil_spec, salary_tab, perc_tab):
-        """
-        Обновляет Выбрать все аналитические графики:
-        1. Bar chart: Топ‑20 городов
-        2. Scatter: специализации по городам
-        3. Bar chart: топ‑20 навыков
-        4. Scatter: топ‑10 вакансий по зарплате
-        5. Pie chart: распределение по опыту/образованию/графику
-        6. Mapbox: география вакансий
-        """
-        # --- 1) Берём копию DataFrame, чтобы не менять глобальный ---
+
+        # берём копию DataFrame, чтобы не менять глобальный
         df_copy = DF_MAIN.copy()
 
-        # --- 2) Фильтрация по сайтам, если выбран не "Выбрать все" ---
+        # фильтрация по селекторам
         if web_sel and 'Выбрать все' not in web_sel:
             df_copy = df_copy[df_copy['website'].isin(web_sel)]
-        # --- 3) Фильтрация по городам ---
         if city_sel and 'Выбрать все' not in city_sel:
             df_copy = df_copy[df_copy['city'].isin(city_sel)]
-        # --- 4) Фильтрация по регионам ---
         if region_sel and 'Выбрать все' not in region_sel:
             df_copy = df_copy[df_copy['subjects_RF'].isin(region_sel)]
-        # --- 5) Фильтрация по специализациям ---
         if spec_sel and 'Выбрать все' not in spec_sel:
             df_copy = df_copy[df_copy['specialization'].isin(spec_sel)]
 
-        # --- 6) Bar chart: Топ‑20 городов ---
-        # cnt = df_copy['city'].value_counts().nlargest(20)
-        # fig_quant = px.bar(
-        #     x=cnt.index.tolist(),
-        #     y=cnt.values.tolist(),
-        #     labels={'x':'Город','y':'Число вакансий'},
-        #     title='Топ‑20 городов по числу вакансий'
-        # )
-
-        cnt = df_copy['city'].value_counts().nlargest(30).reset_index()
+        # график, дерево диаграммы  топ 50 городов с наибольшим количеством вакансий 
+        cnt = df_copy['city'].value_counts().nlargest(50).reset_index()
         cnt.columns = ['city', 'count']
 
         fig_quant = go.Figure(go.Treemap(
@@ -99,67 +78,21 @@ def register_callbacks(app):
             hoverinfo="label+value+percent entry",
             marker=dict(line=dict(width=1, color='#482314')),
             marker_colors=st.PALET_TREEMAP
-            # textfont=dict(color='black'),
-            # hoverinfo="label+value",
-            # marker=dict(
-            #     colors=cnt['count'],
-            #     # colorscale=st.PALET_TREEMAP,
-            #     line=dict(width=0, color='rgba(0,0,0,0)'),  # <--- Убирает чёрные контуры внутри Treemap
-            #     # showscale=True),
-            #     )
+
 
         ))
         
         fig_quant.update_layout(
-            # title='Топ‑50 городов по числу вакансий',
             title_x=0.5,
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
             height=500,
-            # width=900, # по горизонтали места больше
+            # width=900, # по горизонтали 
             margin=dict(t=20, b=10, l=10, r=10),  # минимальные отступы
             )
         fig_quant.update_traces(root_color='rgba(0,0,0,0)')
 
-
-
-
-
-        # cnt = df_copy['city'].value_counts().nlargest(50).reset_index()
-        # cnt.columns = ['city', 'count']
-
-        # fig_quant = px.treemap(
-        #     cnt,
-        #     path=['city'],
-        #     values='count',
-        #     title='Топ‑50 городов по числу вакансий'
-        # )
-        # fig_treemap.show()
-        
-        # --- 7) Scatter: специализации по городам ---
-        # spec_count = df.groupby('city')['specialization'].count().nlargest(20)
-        # fig_spec = px.scatter(
-        #     x=spec_count.index.tolist(),
-        #     y=spec_count.values.tolist(),
-        #     labels={'x':'Город','y':'Количество специализаций'},
-        #     title='Востребованные специальности'
-        # )
-
-        # # --- 8) Bar chart: топ‑20 навыков ---
-        # skills = (
-        #     df_copy['skills']
-        #       .dropna()
-        #       .str.split(',')
-        #       .explode()
-        #       .str.strip()
-        # )
-        # top_skills = skills.value_counts().nlargest(20)
-        # fig_skill = px.bar(
-        #     x=top_skills.index.tolist(),
-        #     y=top_skills.values.tolist(),
-        #     labels={'x':'Навык','y':'Частота'},
-        #     title='Востребованные навыки'
-        # )
+        # график топ 5 по частоте специальностей и навыков 
         if spec_skil_spec == 'spec':
             top = df_copy['specialization'].value_counts(normalize=True).nlargest(5) * 100
             chart_title = 'Топ-5 востребованных специализаций'
@@ -173,7 +106,7 @@ def register_callbacks(app):
             x_label = 'Навык'
             labels = top.index.tolist()
             values = top.values.tolist()
-            xaxis_settings = dict(           # увеличенный шрифт только для skills
+            xaxis_settings = dict(    # увеличенный шрифт только для skills
                 tickfont=dict(size=16)
                 
             )
@@ -203,17 +136,14 @@ def register_callbacks(app):
         
 
         if salary_tab == 'distribution':
-    # 1) РАСПРЕДЕЛЕНИЕ ЗАРПЛАТ (каждая вакансия = точка, полупрозрачность)
-    # берём все ненулевые зарплаты
-            # 1) Берём только колонку salary_from и убираем NaN
+
             salaries = df_copy['salary_from']
 
-# 2) Фильтруем по диапазону (например, от 10 000 до 600 000)
+# фильтруем по диапазону (от 10 000 до 500 000)
             salaries = salaries[salaries.between(10000, 500000)]
             fig_salary = go.Figure(go.Box(
                 y=salaries,   # данные по зарплатам
                 boxpoints=False, #False
-                # fillcolor='rgba(142, 68, 173, 0.4)',
                 fillcolor='#ad4818',  # заливка ящика
                 line=dict(color='#482314', width=1),  # цвет и толщина границ
                                                           # рисовать все точки
@@ -222,7 +152,7 @@ def register_callbacks(app):
                 # marker=dict(size=4, color='rgba(128,90,213,0.5)', showscale=True, opacity=0.6),
                 # name='Оплата труда' # trace если убрать fig.update_traces(showlegend=False, hoverinfo='skip')
                 # line=dict(color='darkorange'),
-                # hoverinfo='skip'# откбчение подсказок медианы и так далее
+                # hoverinfo='skip'# отключение подсказок медианы и так далее
             ))
 
             fig_salary.update_layout(
@@ -233,11 +163,11 @@ def register_callbacks(app):
                 paper_bgcolor='rgba(0,0,0,0)',
                 xaxis=dict(showticklabels=False),    # ось X скрываем, т.к. она не несёт смысла
                 # height=300,
-                # margin=dict(l=20, r=20, t=40, b=20) # внутренними отступами (margin) вокруг графика внутри фигуры (Figure)
+                # margin=dict(l=20, r=20, t=40, b=20) # внутренние отступы (margin) вокруг графика внутри фигуры (Figure)
             )
 
         else:
-    # 2) СРЕДНЯЯ ЗАРПЛАТА ПО ТОП‑10 СПЕЦИАЛИЗАЦИЯМ
+
             mean_spec = (df_copy.groupby('specialization')['salary_from'].mean().nlargest(10))
             fig_salary = go.Figure(go.Scatter(
                 x=mean_spec.index.tolist(),
@@ -269,10 +199,15 @@ def register_callbacks(app):
 
         col_map = {'exp': 'experience', 'edu': 'education', 'sched': 'work_schedule'} # из выбора, loyouts
         col = col_map.get(perc_tab, 'experience') # по умолчанию, id perc_tab
-        # считаем distribution на отфильтрованных данных
         value_counts = df_copy[col].value_counts()
         avg_salaries = df_copy.groupby(col) ['salary_from'].mean()
-        hover_text = [f"{cat}<br>Вакансий: {value_counts[cat]}<br>Средняя зарплата: {avg_salaries[cat]:,.0f} ₽"for cat in value_counts.index]
+        median_salaries = df_copy.groupby(col) ['salary_from'].median()
+        hover_text = [
+            f"{cat}<br>Вакансий: {value_counts[cat]}"
+            f"<br>Средняя зарплата: {avg_salaries[cat]:,.0f} ₽"
+            f"<br>Медианная зарплата: {median_salaries[cat]:,.0f} ₽"
+            for cat in value_counts.index
+            ]
         fig_pie = go.Figure(go.Pie(
             labels=value_counts.index.tolist(), # названия секторов
             values=value_counts.values.tolist(), # значения (размер сектора)
@@ -290,17 +225,6 @@ def register_callbacks(app):
                             plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', legend=dict(font=dict(size=16, color='#333333')))  # размер и цвет шрифта легенды)
 
 
-        # # --- 10) Pie chart:exp/edu/sched ---
-        # col_map = {'exp':'experience', 'edu':'education', 'sched':'work_schedule'}
-        # col = col_map.get(perc_tab, 'experience') # по умолчанию experience
-        # fig_pie = px.pie(
-        #     DF_MAIN,  # строим на полном DF для сравнения
-        #     names=col,
-        #     title=f'Распределение по {col}'
-        # )
-
-        # --- 11) Mapbox: география вакансий ---
-        # 11.1) Агрегация по координатам
         agg = (
             df_copy
             .groupby(['city_latitude','city_longitude'], as_index=False)
@@ -336,46 +260,15 @@ def register_callbacks(app):
             dragmode='pan',
 
         )
-        # # 11.2) Построение карты
-        # fig_map = px.scatter_mapbox(
-        #     agg,
-        #     lat='city_latitude',
-        #     lon='city_longitude',
-        #     size='vacancy_count',            # размер маркера ~ числу вакансий
-        #     size_max=30,                     # макс. размер
-        #     hover_data={                     # наводим подсказку
-        #         'vacancy_count': True,
-        #         'city_latitude': False,
-        #         'city_longitude': False
-        #     },
-        #     zoom=4,                          # стартовый zoom
-        #     center={'lat':55.75,'lon':37.62},# центр на Москву
-        #     height=600,
-        #     title='География вакансий (размер маркера ~ числу вакансий)'
-        # )
-        # # 11.3) Настройка параметров маркеров
-        # fig_map.update_traces(
-        #     marker=dict(
-        #         sizemin=6,        # мин. размер точки
-        #         opacity=0.8       # прозрачность
-        #     )
-        # )
-        # # 11.4) Финальное оформление карты
-        # fig_map.update_layout(
-        #     mapbox_style="open-street-map",
-        #     margin={"r":0,"t":30,"l":0,"b":0},
-        #     dragmode='pan'   # зажатие ЛКМ — перетаскивание карты
-        # )
 
-        # --- Возврат шести фигур по порядку ---
+
+        #  Возврат шести фигур по порядку
         return fig_quant, fig_spec_skill, fig_salary, fig_pie, fig_map
 
 
 
-
-    # -------------------------
-    # 8) Прогноз зарплаты через ML на DF_ML
-    @app.callback( # State -данные, которые передаются в callback, но НЕ запускают его. То есть они не являются триггером как Input
+    #  Прогноз зарплаты через ML на DF_ML
+    @app.callback( # State -данные, которые передаются в callback, но не запускают его. То есть они не являются триггером как Input
         Output('ML_output','children'),
         Output('vacancy_list','children'),
         Input('button','n_clicks'),
@@ -390,7 +283,7 @@ def register_callbacks(app):
         if not n_clicks:
             return '', '' #так как у нас 2 Output мы должны вернуть 2 значения возвращаем 2 пустых
 
-        # фильтрация DF_ML по Выбрать всем 5 параметрам
+        # фильтрация DF_ML выбор по всем 5 параметрам
         filtr = DF_ML[
             (DF_ML['city'] == city) &
             (DF_ML['specialization'] == spec) &
@@ -423,20 +316,25 @@ def register_callbacks(app):
 
         # делаем прогноз
         pred = MODEL.predict(inp)
-            # Исключаем superjob только для вывода
-        no_sj = filtr[filtr['website'] != 'superjob']
-        text = f"💰 {int(pred)} ₽ ± 20000 ₽ (найдено {len(no_sj)} вакансий)"
-        # text = f"💰 {int(pred)} ₽ ± 20000 ₽ (найдено {len(filtr)} вакансий)" # считает все вакансии
+            # исключаем superjob только для вывода
+        # no_sj = filtr[filtr['website'] != 'superjob']
+        # text = f"💰 {int(pred):,} ₽ ± 20 000 ₽ (найдено {len(no_sj)} вакансий)".replace(',', ' ')
+        # text = html.Pre(f"💰 Предсказанная заработная плата составила {int(pred):,} ₽\nВозможная погрешность прогноза — до ± 21000 ₽\nПо вашему запросу найдено {len(filtr)} вакансий".replace(',', ' ')) # считает все вакансии
+        pred_text = html.Div([
+            html.P(f"💰 Предсказанная заработная плата: {int(pred):,} ₽".replace(',', ' ')),
+            html.P("📉 Возможная погрешность прогноза: до ± 21 000 ₽"),
+            html.P(f"🔎 Найдено релевантных вакансий: {len(filtr)}")
+        ], style={'textAlign': 'left', 'marginTop': '0px', 'fontSize': '20px', 'lineHeight': '1.6'})
 
         # строим таблицу вакансий, если есть данные
- 
+        sorted_filtr = filtr.sort_values(by='website', key=lambda x: x == 'superjob') # фильтрует так чтоы 'superjob' был в конце
         rows = [
             html.Tr([
                 html.Td(r['website'], style={'background': 'none', 'text-decoration': 'none'}),
                 html.Td(r['job_title'], style={'background': 'none', 'text-decoration': 'none'}), # html.Td(...) — ячейки таблицы.
-                html.Td(html.A('Открыть', href=r['link'], target='_blank'), style={'background': 'none'}) # Ссылку (html.A(...)) с текстом "Открыть", ведущую на r['link'],target='_blank' — ссылка откроется в новой вкладке. 
-            ]) for _, r in no_sj.iterrows() # Перебираем .iterrows() — каждая вакансия кроме sj
-            # ]) for _, r in filtr.iterrows() # показывает все вакансии
+                html.Td(html.A('Открыть', href=r['link'], target='_blank'), style={'background': 'none', 'color': 'black'}) # Ссылку (html.A(...)) с текстом "Открыть", ведущую на r['link'],target='_blank' — ссылка откроется в новой вкладке. 
+            # ]) for _, r in no_sj.iterrows() # Перебираем .iterrows() — каждая вакансия кроме sj
+            ]) for _, r in sorted_filtr.iterrows() # показывает все вакансии
         ]
         table = dbc.Table( # Используется dbc.Table (из dash_bootstrap_components) для красивой таблицы:
             [html.Thead(html.Tr([html.Th('Сайт', className="bg-transparent"), html.Th('Вакансия', className="bg-transparent"),
@@ -445,4 +343,4 @@ def register_callbacks(app):
             striped=False, bordered=True, hover=False
         )
 
-        return text, table
+        return pred_text, table

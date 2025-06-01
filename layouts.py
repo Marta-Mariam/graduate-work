@@ -1,22 +1,16 @@
-# -*- coding: utf-8 -*-
 from dash import dcc, html
 import dash_bootstrap_components as dbc
 from utils.data_loader import df, df_ML
 import settings as st
 
-# Загружаем DF для селекторов и графиков (основной датасет)
 
+def first_tabs():
 
-def first_tabs():#tab_analysis_layout():
-    """
-    Вкладка «Анализ данных» без переключения по регионам.
-    Селекторы + три графика вверху + два графика во второй строке поровну + карта.
-    """
     return dbc.Container([
         html.Div([
-            html.H5("Представлены аналитические данные,<> можете менять показатели для более глубокой визуализации"),
+            html.H5("Интерактивная карта"), 
         ], className="headings"),
-        html.Br(), #элемент переноса строки в HTML-документе.Он используется для создания новой строки или начала нового абзаца в блоке
+        html.Br(), # элемент переноса строки в HTML-документе.Он используется для создания новой строки или начала нового абзаца в блоке
 
         # фильтры: сайты, города, регионы, специализации
         dbc.Row([
@@ -67,18 +61,15 @@ def first_tabs():#tab_analysis_layout():
         ]),
         html.Br(),
 
-        # === Верхний блок: ТОП‑20 городов, специализации, навыки ===
         dbc.Row([
-            # Топ‑20 городов
             dbc.Col([
-                html.H4("Количество вакансий", className='graph-title'),
+                html.H4("Распределение количества вакансий", className='graph-title'),
                 html.Div(
                 dcc.Graph(id='quant-bar'), className='graph-card')
             ], width=8),
 
-            # Специализации по городам (scatter)
             dbc.Col([
-                html.H4("Специалисты и навыки", className='graph-title'),
+                html.H4("Востребованные специальности и навыки", className='graph-title'),
                 dbc.Tabs(id='spec_skil_spec', active_tab='spec', children=[
                     dbc.Tab(label='Топ 5 специальностей', tab_id='spec'),
                     dbc.Tab(label='Топ 5  навыков', tab_id='skil')
@@ -89,24 +80,20 @@ def first_tabs():#tab_analysis_layout():
         ]),
         html.Br(),
 
-
-        # === Средний блок: два графика поровну ===
         dbc.Row([
-            # Зарплатный scatter
             dbc.Col([
                 html.H4("Показатели заработной платы на рынке труда", className='graph-title'),
                 dbc.Tabs(id='salary_tabs', active_tab='distribution', className='graph-figure', children=[
-                    dbc.Tab(label='Оплата труда', tab_id='distribution'),
-                    dbc.Tab(label='Топ 10', tab_id='average'),
+                    dbc.Tab(label='Уровень зарплат', tab_id='distribution'),
+                    dbc.Tab(label='Рейтинг оплаты труда', tab_id='average'),
                 ]),
-                html.Div( # чтобы была гипкость и однородность на грудих графиках
+                html.Div( # чтобы была гипкость и однородность графиков
                 dcc.Graph(id='salary-scatter'), className='graph-card'
                 )
             ], width=6),
 
-            # Круговая диаграмма
             dbc.Col([
-                html.H4("Вакансии по параметрам", className='graph-title'),
+                html.H4("Анализ зарплат по ключевым параметрам", className='graph-title'),
                 dbc.Tabs(id='perc_tabs', active_tab='exp', children=[
                     dbc.Tab(label='Опыт', tab_id='exp'),
                     dbc.Tab(label='Образование', tab_id='edu'),
@@ -118,8 +105,7 @@ def first_tabs():#tab_analysis_layout():
         ]),
         html.Br(),
 
-        # === Карта вакансий ===
-        html.H4("Географическое расположение вакансий", className='graph-title'),
+        html.H4("Географическое распределение вакансий по России", className='graph-title'),
         html.Div(
         dcc.Graph(
             id='vacancy-map',
@@ -135,7 +121,7 @@ def first_tabs():#tab_analysis_layout():
     ], fluid=True)
 
 
-def last_tabs():#tab_prediction_layout():
+def last_tabs():
     """
     Вкладка «Прогноз зарплаты»
     - 5 dropdown’ов для параметров
@@ -143,7 +129,7 @@ def last_tabs():#tab_prediction_layout():
     - область вывода результата и списка вакансий
     """
     return dbc.Container([
-        html.H2("Выберите параметры, программа произведет расчет", className='headingstu'),
+        html.H2("Калькулятор рыночной зарплаты", className='headingstu'),
         html.Br(),
 
         dbc.Row([
@@ -208,7 +194,7 @@ def create_layout():
     """
     Главный layout с двумя вкладками:
     - Анализ данных
-    - Прогноз зарплаты
+    - Прогноз уровня зарплатной платы
     """
     return dbc.Container([
         html.Div([
