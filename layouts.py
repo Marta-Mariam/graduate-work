@@ -7,9 +7,9 @@ from utils.data_loader import df, df_ML
 def first_tabs():
 
     return dbc.Container([
-        html.Div([
-            html.H5("Интерактивная карта"), 
-        ], xs=12, sm=6, className="headings"),
+        # html.Div([
+        #     html.H5("Интерактивная карта"), 
+        # ], className="headings"),
         html.Br(), # элемент переноса строки в HTML-документе.Он используется для создания новой строки или начала нового абзаца в блоке
 
         # фильтры: сайты, города, регионы, специализации

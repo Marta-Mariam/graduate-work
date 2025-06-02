@@ -57,7 +57,7 @@ body {
     color:#333333; 
     padding: 10px; /* Внутренние отступы */
     margin: 5px auto; /* Отступы снаружи + центрирование */
-    background: linear-gradient(to bottom right, #dfd5de, #ede7ce, #dfcbc2);
+    /* background: linear-gradient(to bottom right, #dfd5de, #ede7ce, #dfcbc2); */
     border-radius: 20px;
     /* border: 1px solid #482314; */
     text-align: center;
@@ -71,7 +71,7 @@ body {
     color:#333333; 
     padding: 13px; /* Внутренние отступы */
     margin: 5px auto; /* Отступы снаружи + центрирование */
-    background: linear-gradient(to bottom right, #dfd5de, #ede7ce, #dfcbc2);
+    /* background: linear-gradient(to bottom right, #dfd5de, #ede7ce, #dfcbc2); */
     border-radius: 20px;
     /* border: 1px solid #482314; */
     text-align: center;
