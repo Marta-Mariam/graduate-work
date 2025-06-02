@@ -9,7 +9,7 @@ def first_tabs():
     return dbc.Container([
         html.Div([
             html.H5("Интерактивная карта"), 
-        ], className="headings"),
+        ], xs=12, sm=6, className="headings"),
         html.Br(), # элемент переноса строки в HTML-документе.Он используется для создания новой строки или начала нового абзаца в блоке
 
         # фильтры: сайты, города, регионы, специализации
@@ -35,7 +35,7 @@ def first_tabs():
                     multi=True,
                     clearable=False
                 )
-            ], width=3),
+            ], xs=12, sm=6, md=3),
             dbc.Col([
                 dbc.Label("Субъекты РФ"),
                 dcc.Dropdown(
