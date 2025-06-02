@@ -1,7 +1,7 @@
 from dash import dcc, html
 import dash_bootstrap_components as dbc
 from utils.data_loader import df, df_ML
-import settings as st
+
 
 
 def first_tabs():
@@ -24,7 +24,7 @@ def first_tabs():
                     multi=True,
                     clearable=False
                 )
-            ], width=3),
+            ], xs=12, sm=6, md=3),# width=3
             dbc.Col([
                 dbc.Label("Город"),
                 dcc.Dropdown(
@@ -46,7 +46,7 @@ def first_tabs():
                     multi=True,
                     clearable=False
                 )
-            ], width=3),
+            ], xs=12, sm=6, md=3),
             dbc.Col([
                 dbc.Label("Специальности"),
                 dcc.Dropdown(
@@ -57,7 +57,7 @@ def first_tabs():
                     multi=True,
                     clearable=False
                 )
-            ], width=3),
+            ], xs=12, sm=6, md=3),
         ]),
         html.Br(),
 
@@ -66,7 +66,7 @@ def first_tabs():
                 html.H4("Распределение количества вакансий", className='graph-title'),
                 html.Div(
                 dcc.Graph(id='quant-bar'), className='graph-card')
-            ], width=8),
+            ], xs=12, sm=6, md=8),
 
             dbc.Col([
                 html.H4("Востребованные специальности и навыки", className='graph-title'),
@@ -76,7 +76,7 @@ def first_tabs():
                 ]),
                 html.Div(
                 dcc.Graph(id='spec_skil_bar'), className='graph-card')
-            ], width=4),
+            ], xs=12, sm=6, md=4),
         ]),
         html.Br(),
 
@@ -90,7 +90,7 @@ def first_tabs():
                 html.Div( # чтобы была гипкость и однородность графиков
                 dcc.Graph(id='salary-scatter'), className='graph-card'
                 )
-            ], width=6),
+            ], xs=12, sm=6, md=6),
 
             dbc.Col([
                 html.H4("Анализ зарплат по ключевым параметрам", className='graph-title'),
@@ -101,7 +101,7 @@ def first_tabs():
                 ]),
                 html.Div(
                 dcc.Graph(id='perc-pie'), className='graph-card')
-            ], width=6),
+            ], xs=12, sm=6, md=6),
         ]),
         html.Br(),
 
@@ -177,14 +177,14 @@ def last_tabs():
                 html.Br(),
 
                 dbc.Button("Рассчитать", id='button', class_name='button')
-            ],  width=4),
+            ],  xs=12, sm=6, md=4),
 
 
             # Вывод результата
             dbc.Col([
                 html.Div(id='ML_output', style={'fontSize': '24px', 'padding' :'5px', 'margin': '10px auto', 'text-align': 'center'}), #prediction-output'
                 html.Div(id='vacancy_list')
-            ], width=8),
+            ],xs=12, sm=6, md=8),
         ])
     ], fluid=True)
 
