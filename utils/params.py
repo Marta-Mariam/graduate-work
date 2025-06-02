@@ -97,10 +97,8 @@ list_skills = ['microservices', 'github', '1с', 'git', 'django', 'android studi
 'bert', 'swagger', 'next.js', 'data science', 'r', 'mysql', 'dynamodb', 'gitlab ci/cd', 'работа с неопределенностью', 'vba', 'visio',
 'nginx', 'lua', 'hbase']
 
-# -*- coding: utf-8 -*-
-# Списки имён признаков для подготовки входа в модель
 
-# Категориальные признаки
+# Категориальные признаки для ML
 cat_features_names = [
     'city',
     'profession_category',
@@ -110,5 +108,5 @@ cat_features_names = [
     'education'
 ]
 
-# Числовые признаки
+# Числовые признаки для Ml
 num_features_names = ['salary_up']

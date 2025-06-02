@@ -41,17 +41,6 @@ body {
 }
 
 /*подзаголовки*/
-/* .headings {
-    color:#333333; 
-    background: linear-gradient(to bottom right, #dfd5de, #ede7ce, #dfcbc2);
-    border-radius: 20px;
-    border: 1px solid #482314;
-    padding: 10px; 
-    margin: 5px auto; 
-    max-Width: 70%;
-    text-align: left;
-    font-size: 16px
-} */
 
 .headings {
     color:#333333; 
@@ -82,7 +71,7 @@ body {
 }
 
 /*селекторы*/
-/* ============ ОБЩИЙ СТИЛЬ ДЛЯ ВСЕХ DROPDOWN ============ */
+/* ОБЩИЙ СТИЛЬ ДЛЯ ВСЕХ DROPDOWN */
 
 /* Основной блок выпадающего меню */
 .Select__control,

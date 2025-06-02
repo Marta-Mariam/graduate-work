@@ -3,7 +3,6 @@ import dash_bootstrap_components as dbc
 from utils.data_loader import df, df_ML
 
 
-
 def first_tabs():
 
     return dbc.Container([
@@ -24,7 +23,7 @@ def first_tabs():
                     multi=True,
                     clearable=False
                 )
-            ], xs=12, sm=6, md=3),# width=3
+            ], xs=12, sm=6, md=3),# width=3 под все
             dbc.Col([
                 dbc.Label("Город"),
                 dcc.Dropdown(
@@ -35,7 +34,7 @@ def first_tabs():
                     multi=True,
                     clearable=False
                 )
-            ], xs=12, sm=6, md=3),
+            ], xs=12, sm=6, md=3), # телефон, планшет, пк
             dbc.Col([
                 dbc.Label("Субъекты РФ"),
                 dcc.Dropdown(
@@ -60,7 +59,7 @@ def first_tabs():
             ], xs=12, sm=6, md=3),
         ]),
         html.Br(),
-
+        # графики 1 строка
         dbc.Row([
             dbc.Col([
                 html.H4("Распределение количества вакансий", className='graph-title'),
@@ -79,7 +78,7 @@ def first_tabs():
             ], xs=12, sm=6, md=4),
         ]),
         html.Br(),
-
+        # графики 2 строка
         dbc.Row([
             dbc.Col([
                 html.H4("Показатели заработной платы на рынке труда", className='graph-title'),
@@ -100,11 +99,11 @@ def first_tabs():
                     dbc.Tab(label='График работы', tab_id='sched'),
                 ]),
                 html.Div(
-                dcc.Graph(id='perc-pie'), className='graph-card')
+                dcc.Graph(id='perc-pie', config={'responsive': True}), className='graph-card')
             ], xs=12, sm=6, md=6),
         ]),
         html.Br(),
-
+        # графики 3 строка
         html.H4("Географическое распределение вакансий по России", className='graph-title'),
         html.Div(
         dcc.Graph(
@@ -124,7 +123,7 @@ def first_tabs():
 def last_tabs():
     """
     Вкладка «Прогноз зарплаты»
-    - 5 dropdown’ов для параметров
+    - 5 dropdown для параметров
     - кнопка «Рассчитать»
     - область вывода результата и списка вакансий
     """
@@ -189,7 +188,6 @@ def last_tabs():
     ], fluid=True)
 
 
-
 def create_layout():
     """
     Главный layout с двумя вкладками:
@@ -203,6 +201,7 @@ def create_layout():
                 className='custom-header'
             )
         ]),
+        # вкладки
         dbc.Tabs(id='tabs', active_tab='tab-1', style={'font-weight': 'bold', 'font-size': '18px'}, children=[
             dbc.Tab(label='Аналитика', tab_id='tab-1'), 
             dbc.Tab(label='Прогноз уровня заработной платы', tab_id='tab-2'),
