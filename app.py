@@ -19,4 +19,4 @@ app.layout = create_layout()              # Основной layout из layouts
 register_callbacks(app)                   # Регистрируем все коллбэки
 
 if __name__ == '__main__':
-    app.run(debug=False)                   # Запуск в режиме отладки
+    app.run(debug=True)                   # Запуск в режиме отладки
