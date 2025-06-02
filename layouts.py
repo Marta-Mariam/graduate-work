@@ -24,7 +24,7 @@ def first_tabs():
                     multi=True,
                     clearable=False
                 )
-            ],xs=12, md=4, width=3),
+            ], width=3),
             dbc.Col([
                 dbc.Label("Город"),
                 dcc.Dropdown(
@@ -35,7 +35,7 @@ def first_tabs():
                     multi=True,
                     clearable=False
                 )
-            ], width=3, xs=12, md=4),
+            ], width=3),
             dbc.Col([
                 dbc.Label("Субъекты РФ"),
                 dcc.Dropdown(
@@ -46,7 +46,7 @@ def first_tabs():
                     multi=True,
                     clearable=False
                 )
-            ], width=3, xs=12, md=4),
+            ], width=3),
             dbc.Col([
                 dbc.Label("Специальности"),
                 dcc.Dropdown(
@@ -57,7 +57,7 @@ def first_tabs():
                     multi=True,
                     clearable=False
                 )
-            ], width=3, xs=12, md=4),
+            ], width=3),
         ]),
         html.Br(),
 
@@ -66,7 +66,7 @@ def first_tabs():
                 html.H4("Распределение количества вакансий", className='graph-title'),
                 html.Div(
                 dcc.Graph(id='quant-bar'), className='graph-card')
-            ], width=8, xs=12, md=8),
+            ], width=8),
 
             dbc.Col([
                 html.H4("Востребованные специальности и навыки", className='graph-title'),
@@ -76,7 +76,7 @@ def first_tabs():
                 ]),
                 html.Div(
                 dcc.Graph(id='spec_skil_bar'), className='graph-card')
-            ], width=4, xs=12, md=4),
+            ], width=4),
         ]),
         html.Br(),
 
@@ -90,7 +90,7 @@ def first_tabs():
                 html.Div( # чтобы была гипкость и однородность графиков
                 dcc.Graph(id='salary-scatter'), className='graph-card'
                 )
-            ], width=6, xs=12, md=4),
+            ], width=6),
 
             dbc.Col([
                 html.H4("Анализ зарплат по ключевым параметрам", className='graph-title'),
@@ -101,7 +101,7 @@ def first_tabs():
                 ]),
                 html.Div(
                 dcc.Graph(id='perc-pie'), className='graph-card')
-            ], width=6, xs=12, md=4),
+            ], width=6),
         ]),
         html.Br(),
 
@@ -177,14 +177,14 @@ def last_tabs():
                 html.Br(),
 
                 dbc.Button("Рассчитать", id='button', class_name='button')
-            ],  width=4, xs=12, md=4),
+            ],  width=4),
 
 
             # Вывод результата
             dbc.Col([
                 html.Div(id='ML_output', style={'fontSize': '24px', 'padding' :'5px', 'margin': '10px auto', 'text-align': 'center'}), #prediction-output'
                 html.Div(id='vacancy_list')
-            ], width=8, xs=12, md=8),
+            ], width=8),
         ])
     ], fluid=True)
 
@@ -206,6 +206,6 @@ def create_layout():
         dbc.Tabs(id='tabs', active_tab='tab-1', style={'font-weight': 'bold', 'font-size': '18px'}, children=[
             dbc.Tab(label='Аналитика', tab_id='tab-1'), 
             dbc.Tab(label='Прогноз уровня заработной платы', tab_id='tab-2'),
-        ], width=8, xs=12, md=4),
+        ]),
         html.Div(id='tabs_content')
     ], fluid=True, style={'maxWidth': '98%'})
