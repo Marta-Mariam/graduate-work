@@ -76,7 +76,7 @@ def register_callbacks(app):
             paper_bgcolor='rgba(0,0,0,0)',
             height=500,
             # width=900, # по горизонтали 
-            margin=dict(t=20, b=10, l=10, r=10),  # минимальные отступы
+            margin=dict(t=20, b=10, l=10, r=10), # минимальные отступы
             )
         
         fig_quant.update_traces(root_color='rgba(0,0,0,0)')
