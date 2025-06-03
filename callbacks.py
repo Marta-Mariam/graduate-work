@@ -58,7 +58,7 @@ def register_callbacks(app):
 
 
     # график, дерево диаграммы  топ 50 городов с наибольшим количеством вакансий 
-        cnt = df_copy['city'].value_counts().nlargest(50).reset_index()
+        cnt = df_copy['city'].value_counts().nlargest(30).reset_index()
         cnt.columns = ['city', 'count']
 
         fig_quant = go.Figure(go.Treemap(
