@@ -20,29 +20,32 @@
 3. Перейдите в браузере (http://...)
 
 ## Структура проекта
-├── assets/ # Стили
-│ └── style.css
+
+```
+├── assets/                 # Стили
+│   └── style.css
 │
-├── data/ # Датасеты и модели
-│ ├── df_vac_not_skills_7626.csv
-│ ├── df_vacancylast_6227.csv
-│ ├── model_ML_salary.cbm # основная модель предсказаний
-│ └── rmse_cb.pkl
+├── data/                  # Датасеты и модели
+│   ├── df_vac_not_skills_7626.csv
+│   ├── df_vacancylast_6227.csv
+│   ├── model_ML_salary.cbm       # основная модель предсказаний
+│   └── rmse_cb.pkl
 │
-├── utils/ # Вспомогательные модули
-│ ├── init.py
-│ ├── data_loader.py
-│ ├── data_loader_HH.py
-│ ├── data_loader_SuperJOB.py
-│ └── params.py
+├── utils/                 # Вспомогательные модули
+│   ├── __init__.py
+│   ├── data_loader.py
+│   ├── data_loader_HH.py
+│   ├── data_loader_SuperJOB.py
+│   └── params.py
 │
-├── app.py # Главный файл приложения
-├── callbacks.py # Обработка взаимодействий
-├── layouts.py # Описание структуры интерфейса
-├── ML_dash.ipynb # Jupyter-ноутбук с ML
-├── model_up.cbm # модель CatBoost для "salary_ap"
-├── model.cbm # модель CatBoost для "salary_from"
-├── preprocessing.ipynb # Jupyter-ноутбук для обработки данных
-└── README.md # Документация проекта
+├── app.py                 # Главный файл приложения
+├── callbacks.py           # Обработка взаимодействий
+├── layouts.py             # Описание структуры интерфейса
+├── ML_dash.ipynb          # Jupyter-ноутбук с ML
+├── model_up.cbm           # модель CatBoost для "salary_ap"
+├── model.cbm              # модель CatBoost для "salary_from"
+├── preprocessing.ipynb    # Jupyter-ноутбук для обработки данных
+└── README.md              # Документация проекта
+```
 
 
